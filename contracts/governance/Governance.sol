@@ -414,13 +414,12 @@ contract Governance is
         }
         address propAddr = prop.params.proposalContract;
         bool success;
-        bytes memory result;
         if (prop.params.executable == Proposal.ExecType.CALL) {
-            (success, result) = propAddr.call(
+            (success, ) = propAddr.call(
                 abi.encodeWithSignature("execute_call(uint256)", winnerOptionID)
             );
         } else {
-            (success, result) = propAddr.delegatecall(
+            (success, ) = propAddr.delegatecall(
                 abi.encodeWithSignature(
                     "execute_delegatecall(address,uint256)",
                     propAddr,
@@ -428,7 +427,6 @@ contract Governance is
                 )
             );
         }
-        result;
         return (success, false);
     }
 
